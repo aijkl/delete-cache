@@ -20,17 +20,18 @@ namespace CloudFlare
 #if !DEBUG
             json = args[0];
 #endif
-            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);            
-            GitHubClient github = new GitHubClient(new ProductHeaderValue(settings.GitHub.UserAgent));
-            github.Credentials = new Credentials(settings.GitHub.Token);
+            AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);
+            GitHubClient github = new GitHubClient(new ProductHeaderValue(settings.GitHub.UserAgent))
+            {
+                Credentials = new Credentials(settings.GitHub.Token)
+            };
             using CloudFlareClient cloudFlareClient = new CloudFlareClient(settings.CloudFlare.EmailAdress, settings.CloudFlare.AuthToken);
 
             Repository repository = await github.Repository.Get(settings.GitHub.Username, settings.GitHub.Repository);
             Branch master = await github.Repository.Branch.Get(repository.Id, settings.GitHub.Branch);
             Branch ghPages = await github.Repository.Branch.Get(repository.Id, settings.GitHub.Branch);
-            GitHubCommit commit = await github.Repository.Commit.Get(repository.Id, master.Commit.Sha);            
-
-            if (commit.Files.Count > 0)
+            GitHubCommit commit = await github.Repository.Commit.Get(repository.Id, master.Commit.Sha);                   
+            if (commit.Files.Count > 0 && github.Repository.Comment.GetAllForCommit(repository.Id, commit.Sha).Result.First().Body.Equals("skip ci"))
             {
                 await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.Url}/{x.Filename}").ToList());
                 await github.Repository.Comment.Create(repository.Id, ghPages.Commit.Sha, new NewCommitComment("skip ci"));
