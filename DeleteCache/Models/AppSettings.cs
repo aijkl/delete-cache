@@ -18,8 +18,8 @@ namespace Aijkl.CloudFlare.Cache.Models
     }
     public class Core
     {
-        [JsonProperty("url")]
-        public string Url { set; get; }
+        [JsonProperty("baseUrl")]
+        public string BAseUrl { set; get; }
     }
     
     public class GitHub
