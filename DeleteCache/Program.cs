@@ -35,9 +35,9 @@ namespace CloudFlare
                 GitHubCommit commit = await github.Repository.Commit.Get(repository.Id, master.Commit.Sha);
                 var comments = github.Repository.Comment.GetAllForCommit(repository.Id, commit.Sha).Result;
                 bool purge = commit.Files.Count > 0 && comments.Count == 0 || !comments.Last().Body.Equals("skip ci");
-                if (purge)
+                if (true)
                 {
-                    var res = await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.BaseUrl}/{x.Filename}/").ToList());
+                    var res = await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.BaseUrl}/{x.Filename}").ToList());
                     Console.WriteLine($"CloudFlare: Success:{res.Result.Success}");
                     await github.Repository.Comment.Create(repository.Id, ghPages.Commit.Sha, new NewCommitComment("skip ci"));
                 }
