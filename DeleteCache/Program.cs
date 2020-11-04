@@ -34,7 +34,7 @@ namespace CloudFlare
                 Branch ghPages = await github.Repository.Branch.Get(repository.Id, settings.GitHub.Branch);
                 GitHubCommit commit = await github.Repository.Commit.Get(repository.Id, master.Commit.Sha);
                 var comments = github.Repository.Comment.GetAllForCommit(repository.Id, commit.Sha).Result;
-                bool purge = commit.Files.Count > 0 && comments.Count > 0 && comments.Last().Body.Equals("skip ci");
+                bool purge = commit.Files.Count > 0 && comments.Count == 0 || !comments.Last().Body.Equals("skip ci");
                 if (purge)
                 {
                     var res = await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.BaseUrl}/{x.Filename}/").ToList());
