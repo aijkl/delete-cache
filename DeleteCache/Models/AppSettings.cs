@@ -15,13 +15,20 @@ namespace Aijkl.CloudFlare.Cache.Models
 
         [JsonProperty("core")]
         public Core Core { set; get; }
+
+        [JsonProperty("googledrive")]
+        public GoogleDrive GoogleDrive { set; get; }
     }
     public class Core
     {
         [JsonProperty("url")]
         public string Url { set; get; }
+    }    
+    public class GoogleDrive
+    {
+        [JsonProperty("aothToken")]
+        public string AothToken { set; get; }
     }
-    
     public class GitHub
     {
         [JsonProperty("token")]
@@ -32,10 +39,7 @@ namespace Aijkl.CloudFlare.Cache.Models
 
         [JsonProperty("repository")]
         public string Repository { set; get; }
-
-        [JsonProperty("passWord")]
-        public string Passworld { set; get; }
-
+        
         [JsonProperty("userName")]
         public string Username { set; get; }
 
