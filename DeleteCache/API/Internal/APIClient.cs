@@ -45,7 +45,7 @@ namespace Aijkl.CloudFlare.API
 
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NotModified)
             {
-                new CloudFlareException(response);
+                throw new CloudFlareException(response);
             }
 
             if (response.StatusCode != HttpStatusCode.NotModified)
