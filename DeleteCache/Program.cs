@@ -37,7 +37,7 @@ namespace CloudFlare
                 bool purge = commit.Files.Count > 0 && comments.Count > 0 && comments.Last().Body.Equals("skip ci");
                 if (purge)
                 {
-                    await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.Url}/{x.Filename}/").ToList());
+                    await cloudFlareClient.Zone.PurgeFilesByUrl(settings.CloudFlare.Zone, commit.Files.Select(x => $"{settings.Core.BaseUrl}/{x.Filename}/").ToList());
                     await github.Repository.Comment.Create(repository.Id, ghPages.Commit.Sha, new NewCommitComment("skip ci"));
                 }
                 Console.WriteLine($"PurgeFiles:{(purge ? commit.Files.Count : 0)} DateTime:{DateTime.Now} Repository:{repository.Id}");
