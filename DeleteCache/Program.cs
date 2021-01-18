@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Octokit;
 using System.Linq;
 using System.IO;
+using System.Text;
 
 namespace CloudFlare
 {
@@ -20,7 +21,7 @@ namespace CloudFlare
                 json = File.ReadAllText($"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}appsettings.json");
 #endif
 #if !DEBUG
-                json = string.Join(string.Empty, args);
+                json = Encoding.UTF8.GetString(Convert.FromBase64String(string.Join(string.Empty, args)));
 #endif
                 AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);
                 GitHubClient github = new GitHubClient(new ProductHeaderValue(settings.GitHub.UserAgent))
@@ -45,7 +46,7 @@ namespace CloudFlare
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception {ex.StackTrace} {ex.Message}");
+                Console.WriteLine($"CatchException (PrivacyProtection)");
                 throw ex;
             }
         }
