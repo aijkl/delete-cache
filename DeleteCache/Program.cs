@@ -46,8 +46,7 @@ namespace CloudFlare
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"CatchException (PrivacyProtection)");
-                throw ex;
+                Console.WriteLine($"CatchException (PrivacyProtection)");                
             }
         }
     }
