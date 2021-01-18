@@ -46,7 +46,7 @@ namespace CloudFlare
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception {ex.StackTrace}");
-            }            
+            }
         }
     }
 }
