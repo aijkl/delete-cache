@@ -20,7 +20,7 @@ namespace CloudFlare
                 json = File.ReadAllText($"{Directory.GetCurrentDirectory()}{Path.DirectorySeparatorChar}appsettings.json");
 #endif
 #if !DEBUG
-            json = args[0];
+                json = string.Join(string.Empty, args);
 #endif
                 AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);
                 GitHubClient github = new GitHubClient(new ProductHeaderValue(settings.GitHub.UserAgent))
